@@ -13,6 +13,9 @@ import com.proxyhunter.telegram.domain.model.ProxyFilter
 import com.proxyhunter.telegram.domain.model.ProxyProtocol
 import com.proxyhunter.telegram.domain.model.ProxyStatus
 import com.proxyhunter.telegram.domain.repository.ProxyRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -39,11 +42,11 @@ class ProxyRepositoryImpl @Inject constructor(
     // Парсит все включённые источники параллельно, объединяет и сохраняет новые прокси.
     // Дубликаты (тот же ip:port) игнорируются на уровне Room (OnConflictStrategy.IGNORE
     // требует unique index на ip+port — см. миграцию схемы).
-    override suspend fun refreshFromSources(): Int = kotlinx.coroutines.coroutineScope {
+    override suspend fun refreshFromSources(): Int = coroutineScope {
         val sources = sourceRegistry.builtInSources()
         val fetched = sources.map { source ->
-            kotlinx.coroutines.async { runCatching { source.fetch() }.getOrDefault(emptyList()) }
-        }.let { kotlinx.coroutines.awaitAll(*it.toTypedArray()) }.flatten()
+            async { runCatching { source.fetch() }.getOrDefault(emptyList()) }
+        }.awaitAll().flatten()
 
         val withCountries = resolveMissingCountries(fetched)
 
