@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import androidx.room.OnConflictStrategy
 import com.proxyhunter.telegram.data.local.entity.CheckResultEntity
 import com.proxyhunter.telegram.data.local.entity.GeoCacheEntity
 import com.proxyhunter.telegram.data.local.entity.ProxyEntity
