@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Базовый системный тема нужна только на время запуска Activity до того, как
+         Compose отрисует ProxyHunterTheme (см. ui/theme/Theme.kt) — там же вся реальная
+         Material3-палитра и поддержка тёмной/светлой темы. -->
+    <style name="Theme.ProxyHunter" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

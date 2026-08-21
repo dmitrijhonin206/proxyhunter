@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Для foreground-уведомления VPN-туннеля (ProxyHunterVpnService) — BIND_VPN_SERVICE
+         не требует отдельного uses-permission, это защищённое разрешение на стороне
+         системного класса android.net.VpnService, а не то, что запрашивает приложение. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!-- Package visibility (Android 11+) — нужно, чтобы startActivity с tg:// и
+         проверка "установлен ли Telegram" работали корректно -->
+    <queries>
+        <package android:name="org.telegram.messenger" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tg" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".ProxyHunterApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.ProxyHunter"
+        android:supportsRtl="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ProxyHunter">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- android:permission="BIND_VPN_SERVICE" — обязательное системное требование для
+             любого VpnService: только система может биндиться к такому сервису, это не
+             разрешение, которое запрашивается у пользователя (в отличие от того диалога,
+             который показывает VpnService.prepare() — это отдельный, явный шаг согласия). -->
+        <service
+            android:name=".worker.vpn.ProxyHunterVpnService"
+            android:exported="true"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
+    </application>
+</manifest>
