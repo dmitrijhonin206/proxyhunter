@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+
 package com.proxyhunter.telegram.ui.screens.addproxy
 
 import androidx.compose.foundation.layout.*
