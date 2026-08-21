@@ -1,13 +1,5 @@
 name: Build debug APK
 
-# Собирает debug APK в облаке GitHub Actions — не требует Android SDK/Gradle на локальной
-# машине. Полезно, если единственное доступное устройство — телефон: управлять сборкой
-# можно целиком из мобильного браузера (запуск в Actions, скачивание готового APK из
-# Artifacts). Использует системный Gradle из gradle/actions/setup-gradle, а не
-# gradlew/gradle-wrapper.jar — последний сознательно не включён в репозиторий (бинарник,
-# который негде было скачать при генерации проекта, см. PLAN.md §5.7); для CI это не
-# проблема, а для локальной сборки Android Studio сгенерирует его сама при первом открытии.
-
 on:
   push:
     branches: [ main, master ]
@@ -30,6 +22,8 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
 
       - name: Build debug APK
         run: gradle assembleDebug --stacktrace
