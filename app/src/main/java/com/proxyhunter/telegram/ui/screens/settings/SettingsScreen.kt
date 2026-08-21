@@ -20,6 +20,7 @@ private val INTERVAL_OPTIONS_HOURS = listOf(1, 2, 6, 12, 24)
 private val TIMEOUT_OPTIONS_MS = listOf(5000, 8000, 10000)
 private val IMPORT_MIME_TYPES = arrayOf("application/json", "text/csv", "text/comma-separated-values", "text/plain", "*/*")
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onBack: () -> Unit,
